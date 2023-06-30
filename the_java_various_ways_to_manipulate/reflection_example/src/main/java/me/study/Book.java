@@ -1,12 +1,17 @@
 package me.study;
 
+import java.lang.annotation.Target;
+
+@MyAnnotation
 public class Book {
     private String A = "A";
     private static String B = "B";
     private static final String C = "C";
     public String D = "D";
+    @MyAnnotation
     protected String E = "E";
 
+//    @MyAnnotation
     public Book() {
 
     }

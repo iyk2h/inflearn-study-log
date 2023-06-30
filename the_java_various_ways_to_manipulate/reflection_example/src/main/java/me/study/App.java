@@ -133,7 +133,47 @@ public class App {
         Field field2 = bookClass.getDeclaredField("C");
         field2.setAccessible(true);
         System.out.println(field2.get(null));
-        field2.set(null, "It is new C");
         //IllegalAccessException 발생 Can not set static final
+        try {
+            field2.set(null, "It is new C");
+        } catch (IllegalAccessException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("\n\n 어노테이션 실습");
+        /*
+         어노테이션은 주석과 비슷하지만 더 하는일이 많다.
+         소스 코드와, 클래스 파일(바이트 코드)에는 남지만 클래스 파일(바이트 코드)을 로딩했을 때 메모리에는 남지 않는다.
+         만약, 메모리에 남기고 싶다면 @Retention(RetentionPolicy.RUNTIME) 을 사용하면된다.
+         @Retention(RetentionPolicy.CLASS) default
+
+         Book 클래스 파일에 어노테이션 정보까지 보려면
+         `javap -c -v ~~/Book.class`
+
+
+         */
+
+        Arrays.stream(Book.class.getAnnotations()).forEach(System.out::println);
+        // 출력 : @me.study.MyAnnotation()
+
+        /*
+        어노테이션 위치 지정 가능
+        타입, 필드만 사용 가능 : @Target({ElementType.TYPE, ElementType.FIELD})
+
+
+         */
+
+        /*
+        상속받은 클래스의 경우 어노테이션이 안보인다. 보이게 하려면 @Inherited 을 사용하면 된다.
+        `**Retention**` : 해당 애노테이션을 언제까지 유지할 것인가? 소스, 클래스, 런타임
+        `**Inherit**` : 해당 애노테이션을 하위 클래스까지 전달할 것인가?
+        `**Target**` : 어디에 사용할 수 있는가?
+
+        - **`getAnnotations()`** : 상속받은 (@Inherit) 애노테이션까지 조회
+        - **`getDeclareAnnotations()`** : 자기 자신에만 붙어있는 애노테이션 조회
+         */
+        Arrays.stream(MyBook.class.getDeclaredAnnotations()).forEach(System.out::println);
+
+
     }
 }
